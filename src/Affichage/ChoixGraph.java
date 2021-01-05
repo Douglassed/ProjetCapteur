@@ -21,7 +21,7 @@ public class ChoixGraph {
 	TypeCapteurs[] liste;
 	int indexType;
 	JLabel txt;
-	TypeCapteurs type;
+	TypeCapteurs type;//comme
 
 	public ChoixGraph() {
 		liste = TypeCapteurs.values();
