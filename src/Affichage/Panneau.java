@@ -1,8 +1,8 @@
 package Affichage;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.Timer;
+import javax.swing.table.TableColumn;
 
 public class Panneau {
 	int nbCapteur = 3;
@@ -22,19 +23,25 @@ public class Panneau {
 		JPanel posteriori = new JPanel();
 		JPanel gestion = new JPanel();
 
-				
-//		for (int i = 0; i <5 ; i++) {
-//			JLabel boutton = new JLabel("theoreme");
-//			boutton.setBorder(new LineBorder(Color.BLACK));
-//			boutton.setPreferredSize(new Dimension(100,100));
-//			tempsReel.add(boutton);
-//			boutton.setFont(new Font(boutton.getText(), Font.PLAIN, boutton.getFont().getSize()+3));
-//		}
-		String[] titre = {"nom", "type du fluide", "batiment","étage", "pièce", "valeur"};
-		Object[][] donnees = {{"Le théoreme",2,1,1,1,1}};
+		String[] titre = {"Nom", "Type du fluide", "Batiment","Etage", "Pièce", "Valeur"};
+		//CAPTEURSSS
+		Object[][] donnees = {{"Capteur1_03","ELECTRICITE","U2",2,"DevantSalle202",95.2d},{"Capteur1_04","AIR_COMPRIME","U2",2,"salle 201",18d}};
 		tempsReel.setLayout(new FlowLayout());
-		tempsReel.add(new JScrollPane(new JTable(donnees, titre)));
-		tempsReel.setLayout(new GridLayout(nbCapteur, 5));
+		JTable table = new JTable(donnees, titre);
+		table.getColumnModel().getColumn(0).setPreferredWidth(90);
+		table.getColumnModel().getColumn(1).setPreferredWidth(120);
+		table.getColumnModel().getColumn(4).setPreferredWidth(120);
+
+
+		for(int i = 0; i < 6; i++) {
+			TableColumn tcol = table.getColumnModel().getColumn(i);
+			tcol.setCellRenderer(new Tableau());
+		}
+		JScrollPane scroll = new JScrollPane(table);
+		scroll.setPreferredSize(new Dimension(500,413));
+		tempsReel.add(scroll);
+
+		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		posteriori.add(new JLabel(string));
@@ -55,6 +62,8 @@ public class Panneau {
 		});
 		posteriori.add(graphe);
 		gestion.add(seuil);
+		System.out.println(tempsReel.getPreferredSize());
+
 		frame.add(tempsReel, BorderLayout.LINE_START);
 		frame.add(posteriori, BorderLayout.CENTER);
 		frame.add(gestion, BorderLayout.SOUTH);
@@ -63,10 +72,18 @@ public class Panneau {
 		frame.setVisible(true);
 		Timer chrono = new Timer(1000,  new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				donnees[0][2] = (int)donnees[0][2]+1;
+				System.out.println(donnees[1][5]);
+				donnees[0][5] = (double)(donnees[0][5])+2;
 				tempsReel.repaint();
 			}
 		});
 		chrono.start();
+	}
+
+	private Object[][] rafraichir(){
+		for (int i = 0; i < nbCapteur; i++) {
+
+		}
+		return null;
 	}
 }
