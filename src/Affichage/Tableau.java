@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class Tableau extends DefaultTableCellRenderer{
@@ -15,6 +14,7 @@ public class Tableau extends DefaultTableCellRenderer{
 		if (table.getModel().getValueAt(selectedRow, 5) != null && table.getModel().getValueAt(selectedRow, 5) != null) { 
 			double quantite = Double.parseDouble(table.getModel().getValueAt(selectedRow, 5).toString()); 
 			String capteur = table.getModel().getValueAt(selectedRow, 0).toString();
+			System.out.println(capteur);
 			//demande min max capteur
 			double minQuantite = 0;
 			double maxQuantite = 100;

@@ -25,7 +25,6 @@ public class Panneau {
 		JPanel gestion = new JPanel();
 
 		String[] titre = {"Nom", "Type du fluide", "Batiment","Etage", "Pièce", "Valeur"};
-		//CAPTEURSSS
 		rafraichir();
 		tempsReel.setLayout(new FlowLayout());
 		JTable table = new JTable(donnees, titre);
@@ -73,8 +72,9 @@ public class Panneau {
 		frame.setVisible(true);
 		Timer chrono = new Timer(1000,  new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(donnees[1][5]);
-				donnees[0][5] = (double)(donnees[0][5])+2;
+//				System.out.println(donnees[1][5]);
+//				donnees[0][5] = (double)(donnees[0][5])+2;
+				rafraichir();
 				tempsReel.repaint();
 			}
 		});
@@ -85,8 +85,8 @@ public class Panneau {
 		nbCapteur = 3;//modif
 		donnees = new Object[nbCapteur][6];
 		for (int i = 0; i < nbCapteur; i++) {
-			donnees[i][0] = "Capteur1_03";
-			donnees[i][1] = "ELECTRICITE";
+			donnees[i][0] = "Capteur1_03" + i;
+			donnees[i][1] = TypeCapteurs.ELECTRICITE;
 			donnees[i][2] = "U2";
 			donnees[i][3] = 1;
 			donnees[i][4] = "Salle 412 arriere de la salle";
