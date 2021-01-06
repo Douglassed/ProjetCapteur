@@ -17,6 +17,7 @@ import javax.swing.table.TableColumn;
 
 public class Panneau {
 	int nbCapteur = 3;
+	Object[][] donnees;// = {{"Capteur1_03","ELECTRICITE","U2",2,"DevantSalle202",95.2d},{"Capteur1_04","AIR_COMPRIME","U2",2,"salle 201",18d}};
 	public Panneau(String string) {
 		JFrame frame = new JFrame("nouvelle fenetre !");
 		JPanel tempsReel = new JPanel();
@@ -25,7 +26,7 @@ public class Panneau {
 
 		String[] titre = {"Nom", "Type du fluide", "Batiment","Etage", "Pièce", "Valeur"};
 		//CAPTEURSSS
-		Object[][] donnees = {{"Capteur1_03","ELECTRICITE","U2",2,"DevantSalle202",95.2d},{"Capteur1_04","AIR_COMPRIME","U2",2,"salle 201",18d}};
+		rafraichir();
 		tempsReel.setLayout(new FlowLayout());
 		JTable table = new JTable(donnees, titre);
 		table.getColumnModel().getColumn(0).setPreferredWidth(90);
@@ -81,8 +82,15 @@ public class Panneau {
 	}
 
 	private Object[][] rafraichir(){
+		nbCapteur = 3;//modif
+		donnees = new Object[nbCapteur][6];
 		for (int i = 0; i < nbCapteur; i++) {
-
+			donnees[i][0] = "Capteur1_03";
+			donnees[i][1] = "ELECTRICITE";
+			donnees[i][2] = "U2";
+			donnees[i][3] = 1;
+			donnees[i][4] = "Salle 412 arriere de la salle";
+			donnees[i][5] = 45d;
 		}
 		return null;
 	}
