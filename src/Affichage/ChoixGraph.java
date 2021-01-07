@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -68,7 +69,6 @@ public class ChoixGraph {
 	}
 	
 	private void fonction(String s, JButton button) {
-		System.out.println(frame.getPreferredSize());
 
 		capteursChoisis.add(s);
 		if (button.getText() != "none") {
@@ -79,11 +79,40 @@ public class ChoixGraph {
 		txt.setText("Choix du capteur de type "+type+" n°"+cpt+" : ");
 		frame.add(txt, 0);
 		if (cpt > 2 ) {
-			System.out.println("Type : " + liste[indexType] +"\ncapteurs : " + capteursChoisis);
 			frame.dispose();
+			Requetes req = new Requetes();
+			List<String> list = req.getListeDates();
+			System.out.println(list);
+			String fst =(String)JOptionPane.showInputDialog(null, "Choix de la date de debut", "Intervalle des dates", 
+					JOptionPane.DEFAULT_OPTION, null, list.toArray(), list.get(list.size()-1));
+			int i =0;
+			while(list.get(i) != fst) 
+				i++;
+			System.out.println(list);
+
+			for(ListIterator<String> iter = list.listIterator(i+1);iter.hasNext();) {
+				iter.next();
+				iter.remove();
+			}
+			System.out.println(list);
+
+			String snd =(String)JOptionPane.showInputDialog(null, "Choix de la date de fin", "Intervalle des dates", 
+					JOptionPane.DEFAULT_OPTION, null, list.toArray(), null);
+			i=0;
+			System.out.println();
+			System.out.println(list);
+
+			while(list.get(i) != snd) 
+				i++;
+			for(ListIterator<String> iter = list.listIterator(i);iter.hasPrevious();) {
+				iter.previous();
+				iter.remove();
+			}
+			System.out.println(list);
+
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					new Panneau(type, capteursChoisis);
+					new Panneau(type, capteursChoisis,list);
 				}
 			});
 		}else

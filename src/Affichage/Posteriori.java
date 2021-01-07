@@ -2,11 +2,13 @@ package Affichage;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
@@ -21,8 +23,11 @@ import DAO.Requetes;
 public class Posteriori extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private List<String> capteurs;
+	private List<String> listDate;
+	
 
-	public Posteriori(JFrame frame, TypeCapteurs type, List<String> capteursChoisis) {
+	public Posteriori(JFrame frame, TypeCapteurs type, List<String> capteursChoisis, List<String> list) {
+		listDate = list;
 		capteurs = capteursChoisis;
 		JButton bGraph = new JButton("nouveau graphe");
 		bGraph.addActionListener(new ActionListener() {
@@ -37,6 +42,8 @@ public class Posteriori extends JPanel{
 			JFreeChart chart = ChartFactory.createTimeSeriesChart("Graphe", "Date", "Valeur", createCategoryDataset());
 			ChartPanel cp = new ChartPanel(chart,true);
 			this.add(cp);
+			if (listDate.size() == 1)
+				this.add(new JLabel(listDate.get(0)));
 		}
 	}
 	private XYSeriesCollection createCategoryDataset() {
@@ -46,10 +53,18 @@ public class Posteriori extends JPanel{
 		for(String capteur : capteurs) {
 			if (capteur != null) {
 				XYSeries series = new XYSeries(capteur);
-				Map<Long, Float> map = req.getAllValOfDay(capteur, "2021-01-07");
-				
-				for(Long day : map.keySet()) {
-					series.add(day, map.get(day));
+				System.out.println(listDate);
+
+				if (listDate != null)
+					Collections.reverse(listDate);
+				System.out.println(listDate);
+
+				for(String date : listDate) {
+					Map<Long, Float> map = req.getAllValOfDay(capteur, date);
+					
+					for(Long day : map.keySet()) {
+						series.add(day, map.get(day));
+					}
 				}
 				dataset.addSeries(series);
 			}

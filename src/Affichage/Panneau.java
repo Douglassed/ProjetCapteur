@@ -11,10 +11,10 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Panneau {
-	public Panneau(TypeCapteurs type, List<String> capteursChoisis) {
+	public Panneau(TypeCapteurs type, List<String> capteursChoisis, List<String> list) {
 		JFrame frame = new JFrame("nouvelle fenetre !");
 		TempsReel tempsReel = new TempsReel();
-		Posteriori posteriori = new Posteriori(frame, type, capteursChoisis);
+		Posteriori posteriori = new Posteriori(frame, type, capteursChoisis, list);
 		JPanel gestion = new JPanel();
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

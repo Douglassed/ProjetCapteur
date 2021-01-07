@@ -15,6 +15,8 @@ import DAO.Requetes;
 public class TempsReel extends JPanel{
 	int nbCapteur = 3;
 	Object[][] donnees;
+	Requetes req = new Requetes();
+
 	private static final long serialVersionUID = 1L;
 	
 	public TempsReel() {
@@ -36,7 +38,6 @@ public class TempsReel extends JPanel{
 	}
 	
 	public void rafraichir(){
-		Requetes req = new Requetes();
 		List<String> nomCapteurs = req.getNomsCapteurs();
 		for(ListIterator<String> iter = nomCapteurs.listIterator();iter.hasNext();) {
 			String capt = iter.next();
