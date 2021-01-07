@@ -95,7 +95,7 @@ public class Entrees {
 			rst = stmt.executeQuery("SELECT Capteurs.id_capteur FROM Capteurs WHERE nom='"+nom+"'");
 			
 			if (!rst.next()) {
-				stmt.executeUpdate("INSERT INTO Capteurs VALUES ('"+id_capteur+"','"+id_etaCapteur+"','"+nom+"','"+seuil_maxCapteur+"','"+seuil_minCapteur+"','"+colonnes[3]+"','"+colonnes[0]+"')");
+				stmt.executeUpdate("INSERT INTO Capteurs VALUES ('"+id_capteur+"','"+id_etaCapteur+"','"+nom+"','"+seuil_maxCapteur+"','"+seuil_minCapteur+"','"+colonnes[3]+"','"+colonnes[0]+"','"+1+"')");
 				id_capteur++;
 			}
 		} catch (SQLException e) {
@@ -154,5 +154,10 @@ public class Entrees {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		id_capteur=0;
+		id_valeur=0;
+		id_etage=0;
+		id_batiment=0;
+		
 	}
 }
