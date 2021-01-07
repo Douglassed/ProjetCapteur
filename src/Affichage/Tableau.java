@@ -12,9 +12,8 @@ public class Tableau extends DefaultTableCellRenderer{
 		Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		int selectedRow = table.convertRowIndexToModel(row); 
 		if (table.getModel().getValueAt(selectedRow, 5) != null && table.getModel().getValueAt(selectedRow, 5) != null) { 
-			double quantite = Double.parseDouble(table.getModel().getValueAt(selectedRow, 5).toString()); 
+			double quantite = Float.parseFloat(table.getModel().getValueAt(selectedRow, 5).toString()); 
 			String capteur = table.getModel().getValueAt(selectedRow, 0).toString();
-			System.out.println(capteur);
 			//demande min max capteur
 			double minQuantite = 0;
 			double maxQuantite = 100;

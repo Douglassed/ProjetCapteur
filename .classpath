@@ -6,10 +6,16 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="C:/Users/hugo/eclipse-workspace/projetCapteurs/mysql-connector-java-8.0.22.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+=======
+	<classpathentry kind="lib" path="D:/documents/Travail/Info/s4/ProjetCapteur/mysql-connector-java-8.0.22.jar"/>
+	<classpathentry kind="lib" path="D:/Téléchargement/jfreechart-1.0.19/jfreechart-1.0.19/lib/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="D:/Téléchargement/jfreechart-1.0.19/jfreechart-1.0.19/lib/jfreechart-1.0.19.jar"/>
+>>>>>>> d525098c1165b56adfd5d95e201991c9461aaaca
 	<classpathentry kind="output" path="bin"/>
 </classpath>

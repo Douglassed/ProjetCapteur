@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -14,7 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 public class ChoixGraph {
-	List<String> capteursChoisi = new ArrayList<>();
+	List<String> capteursChoisis = new ArrayList<>();
 	JFrame frame = new JFrame("Choix des capteurs");
 	List<String> capteurs = new ArrayList<String>();
 	int cpt = 0;
@@ -28,6 +29,7 @@ public class ChoixGraph {
 		indexType = JOptionPane.showOptionDialog(null, "Choisissez le type du capteur", "Choix du type", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, liste, null);
 		type = liste[indexType];
 		//recuperer la liste des capteurs de ce type
+		//REQUETE SQL
 		capteurs.add("none");
 		capteurs.add("EAC2");
 		capteurs.add("EAG2");
@@ -47,10 +49,15 @@ public class ChoixGraph {
 			JButton button = new JButton(s);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					fonction(s,button);
+					if (s == "none") {
+						fonction(null,button);
+
+					}else {
+						fonction(s,button);
+					}
 				}
 			});
-			button.setToolTipText(s);
+			button.setToolTipText(s);// REQUETE SQL
 			frame.add(button);
 		}
 		frame.setVisible(true);
@@ -58,25 +65,23 @@ public class ChoixGraph {
 	}
 	
 	private void fonction(String s, JButton button) {
-		capteursChoisi.add(s);
+		capteursChoisis.add(s);
 		if (button.getText() != "none") {
 			frame.remove(button);
 		}
-		//frame.setVisible(false);
 		frame.remove(txt);
 		cpt++;
 		txt.setText("Choix du capteur n°"+cpt+" : ");
 		frame.add(txt, 0);
 		if (cpt > 2 ) {
-			System.out.println("Type : " + liste[indexType] +"\ncapteurs : " + capteursChoisi);
+			System.out.println("Type : " + liste[indexType] +"\ncapteurs : " + capteursChoisis);
 			frame.dispose();
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					new Panneau(capteursChoisi.toString() + "\n" + type);
+					new Panneau(capteursChoisis.toString() + "\n" + type);
 				}
 			});
 		}else
 			frame.repaint();
-			//frame.setVisible(true);		
 	}
 }

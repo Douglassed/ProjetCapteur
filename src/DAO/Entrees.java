@@ -103,7 +103,7 @@ public class Entrees {
 		}
 	}
 	
-	public void valeur(String nom, float valeur) {
+	public void valeur(String nom, String valeur) {
 		long id_cap=-1;
 		
 		try {
