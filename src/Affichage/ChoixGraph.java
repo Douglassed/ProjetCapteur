@@ -5,9 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,7 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import Affichage.TypeCapteurs;
 import DAO.Requetes;
 
 public class ChoixGraph {
@@ -34,12 +31,8 @@ public class ChoixGraph {
 		type = liste[indexType];
 		Requetes requete = new Requetes();
 		capteurs = requete.getNomsCapteursParType(type.toString());
-		System.out.println(capteurs);
 		capteurs.add(0,"none");
-		capteurs.add("Capteur 4");
-		capteurs.add("Capteur 5");
 
-		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 10));
 		txt = new JLabel("Choix du capteur de type "+type+" n°"+cpt+" : ");
@@ -75,6 +68,8 @@ public class ChoixGraph {
 	}
 	
 	private void fonction(String s, JButton button) {
+		System.out.println(frame.getPreferredSize());
+
 		capteursChoisis.add(s);
 		if (button.getText() != "none") {
 			frame.remove(button);

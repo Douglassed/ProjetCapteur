@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
@@ -28,6 +27,7 @@ public class Posteriori extends JPanel{
 		JButton bGraph = new JButton("nouveau graphe");
 		bGraph.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println(frame.getPreferredSize());
 				frame.dispose();
 				new ChoixGraph();
 			}

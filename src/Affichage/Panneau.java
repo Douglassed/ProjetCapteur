@@ -33,7 +33,7 @@ public class Panneau {
 		frame.add(tempsReel, BorderLayout.LINE_START);
 		frame.add(posteriori, BorderLayout.CENTER);
 		frame.add(gestion, BorderLayout.SOUTH);
-		frame.setSize(1400,800);
+		frame.setSize(1348,513);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		Timer chrono = new Timer(1000,  new ActionListener() {

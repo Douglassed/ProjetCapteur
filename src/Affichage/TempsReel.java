@@ -14,7 +14,7 @@ import DAO.Requetes;
 
 public class TempsReel extends JPanel{
 	int nbCapteur = 3;
-	Object[][] donnees;// = {{"Capteur1_03","ELECTRICITE","U2",2,"DevantSalle202",95.2d},{"Capteur1_04","AIR_COMPRIME","U2",2,"salle 201",18d}};
+	Object[][] donnees;
 	private static final long serialVersionUID = 1L;
 	
 	public TempsReel() {
