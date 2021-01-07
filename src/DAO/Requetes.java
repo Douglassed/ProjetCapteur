@@ -125,7 +125,7 @@ public class Requetes {
 			Statement stmt = connection.createStatement();
 			ResultSet rst = stmt.executeQuery("SELECT nom FROM Capteurs WHERE type='" + type +"'");
 
-			if (rst.next()) {
+			while (rst.next()) {
 				capteurs.add(rst.getString("nom"));
 			}
 		} catch (SQLException e) {
