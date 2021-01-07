@@ -20,6 +20,32 @@ public class Entrees {
 		id_valeur=0;
 		id_batiment=0;
 		id_etage=0;
+		try {
+			Statement stmt = connection.createStatement();
+			ResultSet rst = stmt.executeQuery("SELECT Capteurs.id_capteur FROM Capteurs");
+			while (rst.next()) {
+				id_capteur++;
+			}
+			
+			rst = stmt.executeQuery("SELECT valeurs.id_valeur FROM Valeurs");
+			while (rst.next()) {
+				id_valeur++;
+			}
+			
+			rst = stmt.executeQuery("SELECT Capteurs.id_capteur FROM Capteurs");
+			while (rst.next()) {
+				id_batiment++;
+			}
+			
+			rst = stmt.executeQuery("SELECT Capteurs.id_capteur FROM Capteurs");
+			while (rst.next()) {
+				id_capteur++;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void capteur(String nom, String entree) {
@@ -54,7 +80,7 @@ public class Entrees {
 				id_batiment++;
 			}
 			
-			rst = stmt.executeQuery("SELECT Etages.id_etage FROM Etages, Batiments WHERE Etages.id_batiment="+id_batCapteur);
+			rst = stmt.executeQuery("SELECT Etages.id_etage FROM Etages, Batiments WHERE Etages.id_batiment="+id_batCapteur+" AND etages.numero="+colonnes[2]);
 			
 			if (rst.next()) {
 				id_etaCapteur=rst.getLong("id_etage");
@@ -65,9 +91,13 @@ public class Entrees {
 				id_etage++;
 			}
 			//ajout du capteur avec les id qu'on vient de récuperer
-						
-			stmt.executeUpdate("INSERT INTO Capteurs VALUES ('"+id_capteur+"','"+id_etaCapteur+"','"+nom+"','"+seuil_maxCapteur+"','"+seuil_minCapteur+"','"+colonnes[3]+"','"+colonnes[0]+"')");
-			id_capteur++;
+			
+			rst = stmt.executeQuery("SELECT Capteurs.id_capteur FROM Capteurs WHERE nom='"+nom+"'");
+			
+			if (!rst.next()) {
+				stmt.executeUpdate("INSERT INTO Capteurs VALUES ('"+id_capteur+"','"+id_etaCapteur+"','"+nom+"','"+seuil_maxCapteur+"','"+seuil_minCapteur+"','"+colonnes[3]+"','"+colonnes[0]+"')");
+				id_capteur++;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -99,6 +129,28 @@ public class Entrees {
 			Statement stmt = connection.createStatement();
 			
 			stmt.executeUpdate("UPDATE Capteurs SET seuil_max='"+seuilMax+"', seuil_min='"+seuilMin+"' WHERE nom='"+nom+"'");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void disconnectCapteur(String nom) {
+		try {
+			Statement stmt = connection.createStatement();
+			
+			stmt.executeUpdate("UPDATE Capteurs SET actif='"+0+"' WHERE nom='"+nom+"'");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	public void emptyBase() {
+		try {
+			Statement stmt = connection.createStatement();
+			
+			stmt.executeUpdate("DELETE FROM Valeurs");
+			stmt.executeUpdate("DELETE FROM Capteurs");
+			stmt.executeUpdate("DELETE FROM Etages");
+			stmt.executeUpdate("DELETE FROM Batiments");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

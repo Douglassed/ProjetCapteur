@@ -149,19 +149,35 @@ public class Requetes {
 		return valeur;
 	}
 	
-	public Map<String, Float> getAllValOfDay(String nom, String jour) {
-		Map<String, Float> assoc=new HashMap<String, Float>();
+	public Map<Long, Float> getAllValOfDay(String nom, String jour) {
+		Map<Long, Float> assoc=new HashMap<Long, Float>();
 		try {
 			Statement stmt = connection.createStatement();
-			ResultSet rst = stmt.executeQuery("SELECT valeurs.valeur, valeurs.date_val FROM valeurs, capteurs WHERE capteurs.id_capteur=valeurs.id_capteur AND capteurs.nom='" + nom + "' AND DATE(valeurs.date_val)='"+ jour +"' ORDER BY valeurs.date_val ASC");
+			ResultSet rst = stmt.executeQuery("SELECT valeurs.valeur, UNIX_TIMESTAMP(valeurs.date_val)*1000 FROM valeurs, capteurs WHERE capteurs.id_capteur=valeurs.id_capteur AND capteurs.nom='" + nom + "' AND DATE(valeurs.date_val)='"+ jour +"' ORDER BY valeurs.date_val ASC");
 					
 			while (rst.next()) {
-				assoc.put(rst.getString("date_val"), rst.getFloat("valeur"));
+				assoc.put(rst.getLong("UNIX_TIMESTAMP(valeurs.date_val)*1000"), rst.getFloat("valeur"));
+				System.out.println("une valeur");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return assoc;
+	}
+	
+	public boolean isActif(String nom) {
+		boolean actif=false;
+		try {
+			Statement stmt = connection.createStatement();
+			ResultSet rst = stmt.executeQuery("SELECT actif FROM Capteurs WHERE nom='" + nom + "'");
+
+			if (rst.next()) {
+				actif=rst.getBoolean("actif");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return actif;
 	}
 	
 }
