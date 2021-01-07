@@ -3,6 +3,7 @@ package Affichage;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -10,10 +11,10 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Panneau {
-	public Panneau(String string) {
+	public Panneau(TypeCapteurs type, List<String> capteursChoisis) {
 		JFrame frame = new JFrame("nouvelle fenetre !");
 		TempsReel tempsReel = new TempsReel();
-		Posteriori posteriori = new Posteriori(string, frame);
+		Posteriori posteriori = new Posteriori(frame, type, capteursChoisis);
 		JPanel gestion = new JPanel();
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,6 +44,5 @@ public class Panneau {
 		});
 		chrono.start();
 	}
-
 	
 }

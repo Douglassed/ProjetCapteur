@@ -2,11 +2,15 @@ package Affichage;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.List;
+import java.util.ListIterator;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
+
+import DAO.Requetes;
 
 public class TempsReel extends JPanel{
 	int nbCapteur = 3;
@@ -32,16 +36,23 @@ public class TempsReel extends JPanel{
 	}
 	
 	public void rafraichir(){
-		nbCapteur = 3;//REQUQTE SQL
-		donnees = new Object[nbCapteur][6];
-		for (int i = 0; i < nbCapteur; i++) {//REGQUETE SQL
-			donnees[i][0] = "Capteur1_03" + i;
-			donnees[i][1] = TypeCapteurs.ELECTRICITE;
-			donnees[i][2] = "U2";
-			donnees[i][3] = 1;
-			donnees[i][4] = "Salle 412 arriere de la salle";
-			donnees[i][5] = 45f;
+		Requetes req = new Requetes();
+		List<String> nomCapteurs = req.getNomsCapteurs();
+		for(ListIterator<String> iter = nomCapteurs.listIterator();iter.hasNext();) {
+			String capt = iter.next();
+			if (!req.isActif(capt))
+				iter.remove();
 		}
-		donnees[0][5] = -10f;
+		nbCapteur = nomCapteurs.size();
+		donnees = new Object[nbCapteur][6];
+		for (int i = 0; i < nbCapteur; i++) {
+			String capteur = nomCapteurs.get(i);
+			donnees[i][0] = capteur;
+			donnees[i][1] = req.getType(capteur);
+			donnees[i][2] = req.getBatiment(capteur);
+			donnees[i][3] = req.getEtage(capteur);
+			donnees[i][4] = req.getLieu(capteur);
+			donnees[i][5] = req.getLastVal(capteur);
+		}
 	}
 }

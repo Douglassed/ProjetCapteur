@@ -2,6 +2,8 @@ package Affichage;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,21 +16,16 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-//import org.jfree.chart.ChartFactory;
-//import org.jfree.chart.ChartPanel;
-//import org.jfree.chart.JFreeChart;
-//import org.jfree.data.time.Day;
-//import org.jfree.data.time.TimeSeries;
-//import org.jfree.data.time.TimeSeriesCollection;
-//import org.jfree.data.xy.XYSeries;
-//import org.jfree.data.xy.XYSeriesCollection;
+import DAO.Requetes;
+
 
 public class Posteriori extends JPanel{
 	private static final long serialVersionUID = 1L;
+	private List<String> capteurs;
 
-	public Posteriori(String string, JFrame frame) {
-		this.add(new JLabel(string));
-		JButton bGraph = new JButton("nouveaux graphes");
+	public Posteriori(JFrame frame, TypeCapteurs type, List<String> capteursChoisis) {
+		capteurs = capteursChoisis;
+		JButton bGraph = new JButton("nouveau graphe");
 		bGraph.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
@@ -36,34 +33,27 @@ public class Posteriori extends JPanel{
 			}
 		});
 		this.add(bGraph);
-		if (string != null) {
-			// //ChartFactory.createXYLineChart("Grahe", "Date", "Valeur", createCategoryDataset(), PlotOrientation.VERTICAL, true, true, false);
-			//("Grahe", "Date", "Valeur", createCategoryDataset());
-			//			CategoryPlot plot = (CategoryPlot) chart.getPlot();
-			JFreeChart chart = ChartFactory.createTimeSeriesChart("Grahe", "Date", "Valeur", createCategoryDataset());
-
-
-			//			ChartPanel chartPanel = new ChartPanel(chart);
-			//			chartPanel.setPreferredSize( new java.awt.Dimension( 560 , 367 ) );
+		if (type != null) {
+			JFreeChart chart = ChartFactory.createTimeSeriesChart("Graphe", "Date", "Valeur", createCategoryDataset());
 			ChartPanel cp = new ChartPanel(chart,true);
-
 			this.add(cp);
 		}
 	}
-	private static XYSeriesCollection createCategoryDataset() {
-
-		XYSeries series1 = new XYSeries("2014");
-		series1.add(-60000*60, 0);
-		series1.add(60000*60*23*3, 2219);
-
-		XYSeries series2 = new XYSeries("2016");
-		series2.add(-60000*60, 0);
-		series2.add(1609965870000L, 1000);
-
+	private XYSeriesCollection createCategoryDataset() {
 		XYSeriesCollection dataset = new XYSeriesCollection();
-		dataset.addSeries(series1);
-		dataset.addSeries(series2);
-
+		Requetes req = new Requetes();
+		
+		for(String capteur : capteurs) {
+			if (capteur != null) {
+				XYSeries series = new XYSeries(capteur);
+				Map<Long, Float> map = req.getAllValOfDay(capteur, "2021-01-07");
+				
+				for(Long day : map.keySet()) {
+					series.add(day, map.get(day));
+				}
+				dataset.addSeries(series);
+			}
+		}
 		return dataset;
 	}
 

@@ -57,7 +57,7 @@ public class FenetreAccueil {
 		if (!close) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					new Panneau(null);
+					new Panneau(null,null);
 				}
 			});
 		}

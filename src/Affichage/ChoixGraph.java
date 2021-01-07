@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -33,12 +34,16 @@ public class ChoixGraph {
 		type = liste[indexType];
 		Requetes requete = new Requetes();
 		capteurs = requete.getNomsCapteursParType(type.toString());
+		System.out.println(capteurs);
 		capteurs.add(0,"none");
+		capteurs.add("Capteur 4");
+		capteurs.add("Capteur 5");
+
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 10));
 		txt = new JLabel("Choix du capteur de type "+type+" n°"+cpt+" : ");
-		txt.setFont(new Font(txt.getText(), Font.PLAIN, txt.getFont().getSize()*2));
+		txt.setFont(new Font(txt.getText(), Font.BOLD, 15));
 		frame.add(txt);
 		frame.add(new JLabel("(info bulle sur chaque capteur)"));
 		
@@ -60,6 +65,8 @@ public class ChoixGraph {
 			String tooltiptext = "Batiment : "+requete.getBatiment(s)+
 					", étage : "+requete.getEtage(s)+
 					", Lieu : "+requete.getLieu(s);
+			if (s == "none")
+				tooltiptext = "aucun capteur";
 			button.setToolTipText(tooltiptext);
 			frame.add(button);
 		}
@@ -74,14 +81,14 @@ public class ChoixGraph {
 		}
 		frame.remove(txt);
 		cpt++;
-		txt.setText("Choix du capteur n°"+cpt+" : ");
+		txt.setText("Choix du capteur de type "+type+" n°"+cpt+" : ");
 		frame.add(txt, 0);
 		if (cpt > 2 ) {
 			System.out.println("Type : " + liste[indexType] +"\ncapteurs : " + capteursChoisis);
 			frame.dispose();
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					new Panneau(capteursChoisis.toString() + "\n" + type);
+					new Panneau(type, capteursChoisis);
 				}
 			});
 		}else
