@@ -14,6 +14,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import Affichage.TypeCapteurs;
+import DAO.Requetes;
+
 public class ChoixGraph {
 	List<String> capteursChoisis = new ArrayList<>();
 	JFrame frame = new JFrame("Choix des capteurs");
@@ -22,22 +25,19 @@ public class ChoixGraph {
 	TypeCapteurs[] liste;
 	int indexType;
 	JLabel txt;
-	TypeCapteurs type;//comme
+	TypeCapteurs type;
 
 	public ChoixGraph() {
 		liste = TypeCapteurs.values();
 		indexType = JOptionPane.showOptionDialog(null, "Choisissez le type du capteur", "Choix du type", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, liste, null);
 		type = liste[indexType];
-		//recuperer la liste des capteurs de ce type
-		//REQUETE SQL
-		capteurs.add("none");
-		capteurs.add("EAC2");
-		capteurs.add("EAG2");
-		capteurs.add("TRK1");
+		Requetes requete = new Requetes();
+		capteurs = requete.getNomsCapteursParType(type.toString());
+		capteurs.add(0,"none");
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 10));
-		txt = new JLabel("Choix du capteur n°"+cpt+" : ");
+		txt = new JLabel("Choix du capteur de type "+type+" n°"+cpt+" : ");
 		txt.setFont(new Font(txt.getText(), Font.PLAIN, txt.getFont().getSize()*2));
 		frame.add(txt);
 		frame.add(new JLabel("(info bulle sur chaque capteur)"));
@@ -57,7 +57,10 @@ public class ChoixGraph {
 					}
 				}
 			});
-			button.setToolTipText(s);// REQUETE SQL
+			String tooltiptext = "Batiment : "+requete.getBatiment(s)+
+					", étage : "+requete.getEtage(s)+
+					", Lieu : "+requete.getLieu(s);
+			button.setToolTipText(tooltiptext);
 			frame.add(button);
 		}
 		frame.setVisible(true);
