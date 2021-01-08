@@ -20,7 +20,7 @@ public class Serveur implements Runnable
     public Serveur() {
     	//en.emptyBase();
         try {
-            this.server = new ServerSocket(8952);
+            this.server = new ServerSocket(PORT);
         }
         catch (IOException e) {
             e.printStackTrace();

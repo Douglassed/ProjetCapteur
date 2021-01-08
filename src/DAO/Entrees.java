@@ -32,12 +32,12 @@ public class Entrees {
 				id_valeur++;
 			}
 			
-			rst = stmt.executeQuery("SELECT Capteurs.id_capteur FROM Capteurs");
+			rst = stmt.executeQuery("SELECT Batiments.id_batiment FROM Batiments");
 			while (rst.next()) {
 				id_batiment++;
 			}
 			
-			rst = stmt.executeQuery("SELECT Capteurs.id_capteur FROM Capteurs");
+			rst = stmt.executeQuery("SELECT Etages.id_etage FROM Etages");
 			while (rst.next()) {
 				id_capteur++;
 			}
