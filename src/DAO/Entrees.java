@@ -39,7 +39,7 @@ public class Entrees {
 			
 			rst = stmt.executeQuery("SELECT Etages.id_etage FROM Etages");
 			while (rst.next()) {
-				id_capteur++;
+				id_etage++;
 			}
 			
 		} catch (SQLException e) {
