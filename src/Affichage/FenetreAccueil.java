@@ -8,9 +8,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.text.Document;
+
+import Serveur.Serveur;
 
 public class FenetreAccueil {
 	private JFrame frame;
@@ -34,8 +37,8 @@ public class FenetreAccueil {
 				fonction(true);
 			}
 		});
-		text = new JTextField("8892",5);
-		text.setFont(new Font("8892", Font.PLAIN, 30));
+		text = new JTextField("8952",5);
+		text.setFont(new Font("8952", Font.PLAIN, 30));
 		lab1 = new JLabel("Bienvenue",JLabel.CENTER);
 		frame = new JFrame("Page d'accueil");
 		frame.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 50));
@@ -53,13 +56,28 @@ public class FenetreAccueil {
 	}
 
 	private void fonction(boolean close) {
-		frame.dispose();
-		if (!close) {
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					new Panneau(null, null, null);
+		try {
+			if (!close) {
+				int port = Integer.parseInt(text.getText());
+				if (port > 0) {
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							final Serveur c = new Serveur(port);
+					        final Thread t = new Thread(c);
+					        t.start();
+							new Panneau(null, null, null);
+						}
+					});
+				}else {
+					JOptionPane.showMessageDialog(frame, "Mauvaise entrée : entier positif demandé", "Erreur", JOptionPane.ERROR_MESSAGE);
+					text.setText("8952");
 				}
-			});
+			}else {
+				frame.dispose();
+			}
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(frame, "Mauvaise entrée : entier positif demandé", "Erreur", JOptionPane.ERROR_MESSAGE);
+			text.setText("8952");
 		}
 	}
 }

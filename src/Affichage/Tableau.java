@@ -22,7 +22,6 @@ public class Tableau extends DefaultTableCellRenderer{
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,   boolean hasFocus, int row, int column) {
 		Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		setHorizontalAlignment(SwingConstants.RIGHT);
-		setValue(donnees[row][column]);
 		int selectedRow = table.convertRowIndexToModel(row); 
 		double quantite = Float.parseFloat(table.getModel().getValueAt(selectedRow, 5).toString()); 
 		String capteur = table.getModel().getValueAt(selectedRow, 0).toString();

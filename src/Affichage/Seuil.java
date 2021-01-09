@@ -2,7 +2,6 @@ package Affichage;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.text.html.HTML;
 
 import DAO.Requetes;
 

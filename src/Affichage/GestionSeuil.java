@@ -23,10 +23,11 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import DAO.Entrees;
 import DAO.Requetes;
 
 public class GestionSeuil extends JPanel{
+	private static final long serialVersionUID = 1L;
+	
 	private JTree tree;
 	private Requetes req = new Requetes();
 	private boolean choose = false;
@@ -85,7 +86,6 @@ public class GestionSeuil extends JPanel{
 		box.add(new JLabel("    "));
 		box.add(seuil);
 		box.add(Box.createHorizontalGlue());
-		box.add(Box.createHorizontalGlue());
 		Box box2 = new Box(BoxLayout.X_AXIS);
 		box2.add(new JLabel(" "));
 		jp.add(box);
@@ -143,8 +143,9 @@ public class GestionSeuil extends JPanel{
 				if (selectedNode.getLevel() == 3) {
 					choose = true;
 					setData((capteur = selectedNode.getUserObject().toString()));
-					if (frame.getPreferredSize().width > frame.getSize().width)
-						frame.setSize(frame.getPreferredSize());
+//					if (frame.getPreferredSize().width > frame.getSize().width)
+//						frame.setSize(new Dimension(frame.getPreferredSize().width,frame.getSize().height));
+					frame.pack();
 					frame.repaint();
 				}
 			}

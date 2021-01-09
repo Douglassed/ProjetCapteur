@@ -52,11 +52,9 @@ public class Posteriori extends JPanel{
 		for(String capteur : capteurs) {
 			if (capteur != null) {
 				XYSeries series = new XYSeries(capteur);
-				System.out.println(listDate);
 
 				if (listDate != null)
 					Collections.reverse(listDate);
-				System.out.println(listDate);
 
 				for(String date : listDate) {
 					Map<Long, Float> map = req.getAllValOfDay(capteur, date);

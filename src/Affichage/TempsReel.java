@@ -7,8 +7,6 @@ import java.util.ListIterator;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
@@ -25,7 +23,7 @@ public class TempsReel extends JPanel{
 
 	public TempsReel() {
 		refreshData();
-		table = new JTable(new ModeleDonnees(donnees,titre));
+		table = new JTable(new ModeleDonnees(donnees,titre,req));
 		this.setLayout(new FlowLayout());
 		TableColumnModel tcol = table.getColumnModel();
 		tcol.getColumn(0).setPreferredWidth(90);

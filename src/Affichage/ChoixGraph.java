@@ -83,25 +83,20 @@ public class ChoixGraph {
 			Requetes req = new Requetes();
 			List<String> list = req.getListeDates();
 			if (list.size()!=0) {
-				System.out.println(list);
 				String fst =(String)JOptionPane.showInputDialog(null, "Choix de la date de debut", "Intervalle des dates", 
 						JOptionPane.DEFAULT_OPTION, null, list.toArray(), list.get(list.size()-1));
 				int i =0;
 				while(list.get(i) != fst) 
 					i++;
-				System.out.println(list);
 
 				for(ListIterator<String> iter = list.listIterator(i+1);iter.hasNext();) {
 					iter.next();
 					iter.remove();
 				}
-				System.out.println(list);
 
 				String snd =(String)JOptionPane.showInputDialog(null, "Choix de la date de fin", "Intervalle des dates", 
 						JOptionPane.DEFAULT_OPTION, null, list.toArray(), null);
 				i=0;
-				System.out.println();
-				System.out.println(list);
 
 				while(list.get(i) != snd) 
 					i++;
@@ -109,7 +104,6 @@ public class ChoixGraph {
 					iter.previous();
 					iter.remove();
 				}
-				System.out.println(list);
 			}
 
 			SwingUtilities.invokeLater(new Runnable() {

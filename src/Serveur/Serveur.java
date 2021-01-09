@@ -17,10 +17,11 @@ public class Serveur implements Runnable
     ServerSocket server;
     Entrees en=new Entrees();
     
-    public Serveur() {
+    public Serveur(int port) {
     	//en.emptyBase();
         try {
-            this.server = new ServerSocket(PORT);
+        	en.disconnectAllCapteurs();
+            this.server = new ServerSocket(port);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -52,6 +53,8 @@ public class Serveur implements Runnable
                                     	en.capteur(recu[1], recu[2]);
                                     else if(recu[0].equals("Donnee"))
                                     	en.valeur(recu[1], recu[2]);
+                                    else if(recu[0].equals("Dexonnexion"))
+                                        en.disconnectCapteur(recu[1]);
                                     
                                 }
                                 
@@ -77,7 +80,7 @@ public class Serveur implements Runnable
     }
     
     public static void main(final String[] args) {
-        final Serveur c = new Serveur();
+        final Serveur c = new Serveur(8952);
         final Thread t = new Thread(c);
         t.start();
     }

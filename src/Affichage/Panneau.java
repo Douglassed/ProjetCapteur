@@ -25,7 +25,7 @@ public class Panneau {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		Timer chrono = new Timer(1000,  new ActionListener() {
+		Timer chrono = new Timer(2000,  new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tempsReel.refreshData();
 				tempsReel.repaint();
