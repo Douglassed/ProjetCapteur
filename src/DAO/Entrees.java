@@ -123,17 +123,6 @@ public class Entrees {
 		}
 	}
 	
-	public void seuils(String nom, float seuilMax, float seuilMin) {
-		
-		try {
-			Statement stmt = connection.createStatement();
-			
-			stmt.executeUpdate("UPDATE Capteurs SET seuil_max='"+seuilMax+"', seuil_min='"+seuilMin+"' WHERE nom='"+nom+"'");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public void disconnectCapteur(String nom) {
 		try {
 			Statement stmt = connection.createStatement();

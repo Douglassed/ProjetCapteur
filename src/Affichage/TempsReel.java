@@ -1,6 +1,5 @@
 package Affichage;
 
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.List;
 import java.util.ListIterator;
@@ -8,7 +7,10 @@ import java.util.ListIterator;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import DAO.Requetes;
 
@@ -17,13 +19,24 @@ public class TempsReel extends JPanel{
 	Object[][] donnees;
 	Requetes req = new Requetes();
 	JTable table;
-	String[] titre = {"Nom", "Type du fluide", "Batiment","Etage", "Pièce", "Valeur"};
+	String[] titre = {"Nom", "Type du fluide", "Batiment","Etage", "Pièce", "Valeur", "Unite"};
 
 	private static final long serialVersionUID = 1L;
 
 	public TempsReel() {
 		refreshData();
-		refreshTable();
+		table = new JTable(new ModeleDonnees(donnees,titre));
+		this.setLayout(new FlowLayout());
+		TableColumnModel tcol = table.getColumnModel();
+		tcol.getColumn(0).setPreferredWidth(90);
+		tcol.getColumn(1).setPreferredWidth(120);
+		tcol.getColumn(4).setPreferredWidth(120);
+		tcol.getColumn(6).setPreferredWidth(45);
+		TableColumn tucol = table.getColumnModel().getColumn(5);
+		tucol.setCellRenderer(new Tableau(req, donnees));
+		JScrollPane scroll = new JScrollPane(table);
+		this.add(scroll);
+
 	}
 
 	public void refreshData(){
@@ -34,7 +47,7 @@ public class TempsReel extends JPanel{
 				iter.remove();
 		}
 		nbCapteur = nomCapteurs.size();
-		donnees = new Object[nbCapteur][6];
+		donnees = new Object[nbCapteur][7];
 		table = new JTable(donnees, titre);
 		for (int i = 0; i < nbCapteur; i++) {
 			String capteur = nomCapteurs.get(i);
@@ -44,26 +57,11 @@ public class TempsReel extends JPanel{
 			donnees[i][3] = req.getEtage(capteur);
 			donnees[i][4] = req.getLieu(capteur);
 			donnees[i][5] = req.getLastVal(capteur);
-			System.out.println(donnees[i][0]);
+			donnees[i][6] = TypeCapteurs.stringToUnite(req.getType(capteur));
 		}
 
 	}
 
-	public void refreshTable() {
-		table = new JTable(donnees, titre);
-		this.setLayout(new FlowLayout());
-		table.getColumnModel().getColumn(0).setPreferredWidth(90);
-		table.getColumnModel().getColumn(1).setPreferredWidth(120);
-		table.getColumnModel().getColumn(4).setPreferredWidth(120);
-
-		for(int i = 0; i < 6; i++) { 
-			TableColumn tcol = table.getColumnModel().getColumn(i);
-			tcol.setCellRenderer(new Tableau());
-		}
-		JScrollPane scroll = new JScrollPane(table);
-//		scroll.setPreferredSize(new Dimension(500,413));
-		this.add(scroll);
-	}
 	public int getNbCapteur() {
 		return nbCapteur;
 	}

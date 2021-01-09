@@ -6,6 +6,7 @@ public class Requetes {
 	Connection connection;
 
 	public Requetes() {
+		System.out.println("connexion");
 		try {
 			connection = DriverManager.getConnection(
 					"jdbc:mysql://127.0.0.1:3306/projetcapteurs?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC", "root", "");
@@ -179,7 +180,7 @@ public class Requetes {
 		}
 		return actif;
 	}
-	
+
 	public ArrayList<String> getListeDates(){
 		ArrayList<String> dates=new ArrayList<String>();
 		try {
@@ -197,54 +198,65 @@ public class Requetes {
 		}
 		return dates;
 	}
-	
+
 	public ArrayList<String> getAllBatiments(){
-        ArrayList<String> batiments=new ArrayList<String>();
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet rst = stmt.executeQuery("SELECT nom FROM Batiments ORDER BY id_batiment ASC");
+		ArrayList<String> batiments=new ArrayList<String>();
+		try {
+			Statement stmt = connection.createStatement();
+			ResultSet rst = stmt.executeQuery("SELECT nom FROM Batiments ORDER BY id_batiment ASC");
 
-            while (rst.next()) {
-                String dateToAdd=rst.getString("nom");
-                    batiments.add(dateToAdd);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return batiments;
-    }
-	
+			while (rst.next()) {
+				String dateToAdd=rst.getString("nom");
+				batiments.add(dateToAdd);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return batiments;
+	}
+
 	public ArrayList<String> getEtagesFromBatiment(String btp){
-        ArrayList<String> etages=new ArrayList<String>();
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet rst = stmt.executeQuery("SELECT numero FROM Etages, Batiments WHERE Etages.id_batiment=Batiments.id_batiment AND Batiments.nom='"+btp+"' ORDER BY numero ASC");
+		ArrayList<String> etages=new ArrayList<String>();
+		try {
+			Statement stmt = connection.createStatement();
+			ResultSet rst = stmt.executeQuery("SELECT numero FROM Etages, Batiments WHERE Etages.id_batiment=Batiments.id_batiment AND Batiments.nom='"+btp+"' ORDER BY numero ASC");
 
-            while (rst.next()) {
-                String etage=rst.getString("numero");
-                etages.add(etage);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return etages;
-    }
-	
+			while (rst.next()) {
+				String etage=rst.getString("numero");
+				etages.add(etage);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return etages;
+	}
+
 	public ArrayList<String> getCapteursFromEtageAndBatiment(String etage, String btp){
-        ArrayList<String> capteurs=new ArrayList<String>();
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet rst = stmt.executeQuery("SELECT Capteurs.nom FROM Capteurs, Etages, Batiments WHERE Etages.id_batiment=Batiments.id_batiment AND Batiments.nom='"+btp+"' AND Capteurs.id_etage=Etages.id_etage AND Etages.numero='"+etage+"' ORDER BY Capteurs.id_capteur ASC");
+		ArrayList<String> capteurs=new ArrayList<String>();
+		try {
+			Statement stmt = connection.createStatement();
+			ResultSet rst = stmt.executeQuery("SELECT Capteurs.nom FROM Capteurs, Etages, Batiments WHERE Etages.id_batiment=Batiments.id_batiment AND Batiments.nom='"+btp+"' AND Capteurs.id_etage=Etages.id_etage AND Etages.numero='"+etage+"' ORDER BY Capteurs.id_capteur ASC");
 
-            while (rst.next()) {
-                String capteur=rst.getString("nom");
-                capteurs.add(capteur);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return capteurs;
-    }
+			while (rst.next()) {
+				String capteur=rst.getString("nom");
+				capteurs.add(capteur);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return capteurs;
+	}
+
+	public void seuils(String nom, float seuilMax, float seuilMin) {
+
+		try {
+			Statement stmt = connection.createStatement();
+
+			stmt.executeUpdate("UPDATE Capteurs SET seuil_max='"+seuilMax+"', seuil_min='"+seuilMin+"' WHERE nom='"+nom+"'");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
 

@@ -1,48 +1,63 @@
 package Affichage;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeNode;
 
+import DAO.Entrees;
 import DAO.Requetes;
 
 public class GestionSeuil extends JPanel{
 	private JTree tree;
-	private JLabel selectedLabel;
 	private Requetes req = new Requetes();
+	private boolean choose = false;
+	private JPanel details;
+	Object[] data = {"","","","","","",""};
+	private ArrayList<JLabel> labels = new ArrayList<JLabel>();
+	private String capteur;
 
 	public GestionSeuil(JFrame frame) {
-		JButton seuil = new JButton("Modifier seuils");
+		super(new BorderLayout());
+		details = new JPanel();
+		JButton seuil = new JButton("Modifier");
 		seuil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Seuil seuil = new Seuil(frame);
-				seuil.getSeuilMax();
-				seuil.getSeuilMin();
+				if (choose) {
+					float seuilMax = req.getSeuilMax(labels.get(0).getText());
+					float seuilMin = req.getSeuilMin(labels.get(0).getText());
+					Seuil seuil = new Seuil(frame, seuilMin, seuilMax, capteur, req);
+					req.seuils(capteur, seuil.getSeuilMax(), seuil.getSeuilMin());
+					setData(capteur);
+				}else {
+					JOptionPane.showMessageDialog(frame, "Veuillez choisir un capteur dans l'abre");
+				}
 			}
 		});
-
-
 
 		//create the root node
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
 
 		for (String bat : req.getAllBatiments()) {
-			DefaultMutableTreeNode batiment = new DefaultMutableTreeNode(bat+"                                         ");
+			DefaultMutableTreeNode batiment = new DefaultMutableTreeNode(bat);
 			for (String et : req.getEtagesFromBatiment(bat)) {
 				DefaultMutableTreeNode etage = new DefaultMutableTreeNode(et);
 				for (String cap : req.getCapteursFromEtageAndBatiment(et, bat)) {
@@ -56,31 +71,106 @@ public class GestionSeuil extends JPanel{
 
 		//create the tree by passing in the root node
 		tree = new JTree(root);
-		DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();       
-
-		tree.setCellRenderer(renderer);
 		tree.setShowsRootHandles(false);
+		tree.setVisibleRowCount(10);
 		tree.setRootVisible(false);
-		add(new JScrollPane(tree));
-		add(seuil);
+		tree.setPreferredSize(new Dimension(150,50));
+		add(new JScrollPane(tree),BorderLayout.WEST);
+		details.setLayout(new BorderLayout());
+		JPanel jp = new JPanel();
+		jp.setLayout(new BoxLayout(jp, BoxLayout.Y_AXIS));
+		Box box = new Box(BoxLayout.X_AXIS);
+		box.add(Box.createHorizontalGlue());
+		box.add(new JLabel("Modifier les Seuils : "));
+		box.add(new JLabel("    "));
+		box.add(seuil);
+		box.add(Box.createHorizontalGlue());
+		box.add(Box.createHorizontalGlue());
+		Box box2 = new Box(BoxLayout.X_AXIS);
+		box2.add(new JLabel(" "));
+		jp.add(box);
+		jp.add(box2);
+
+		details.add(jp,BorderLayout.SOUTH);
+
+		JPanel tableau = new JPanel();
+		String[] titles = {"Nom", "Type", "Batiment", "Etage", "Lieu", "Seuil Min", "Seuil Max"};
 
 
-		selectedLabel = new JLabel();
-		add(selectedLabel);
+
+		tableau.setLayout(new BoxLayout(tableau, BoxLayout.Y_AXIS));
+		//BOX 1
+		Box line1=new Box(BoxLayout.X_AXIS);
+		line1.add(Box.createVerticalGlue());
+		//BOX 2
+		Box line2=new Box(BoxLayout.X_AXIS);
+		line2.add(Box.createHorizontalGlue());
+		JPanel jsp = new JPanel(new GridLayout(2, 5));
+
+		for (String str : titles) {
+			JLabel lab = new JLabel(str);
+			lab.setHorizontalAlignment(JLabel.CENTER);
+			lab.setBorder(BorderFactory.createLineBorder(Color.black));
+			jsp.add(lab);
+		}
+
+		for (int i = 0; i < 7; i++) {
+			JLabel lab = new JLabel(" ");
+			labels.add(lab);
+			lab.setHorizontalAlignment(JLabel.CENTER);
+			lab.setBorder(BorderFactory.createLineBorder(Color.black));
+			jsp.add(lab);
+		}
+		line2.add(jsp);
+		line2.add(Box.createHorizontalGlue());
+		//BOX 3
+		Box line3 = new Box(BoxLayout.X_AXIS);
+		line3.add(Box.createVerticalGlue());
+
+		tableau.add(line1);
+		tableau.add(line2);
+		tableau.add(line3);		
+
+		details.add(tableau,BorderLayout.CENTER);
+		add(details,BorderLayout.CENTER);
+
+		JLabel txt = new JLabel("Panneau de gestion des capteurs");
+		txt.setBorder(BorderFactory.createLineBorder(Color.black));
+		add(txt,BorderLayout.NORTH);
 		tree.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
-			@Override
 			public void valueChanged(TreeSelectionEvent e) {
 				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 				if (selectedNode.getLevel() == 3) {
-					selectedLabel.setText("");
-					TreeNode[] tn = selectedNode.getPath();
-					for (int i = 1; i < selectedNode.getPath().length; i++) {
-						System.out.println(tn[i]);
-					}
+					choose = true;
+					setData((capteur = selectedNode.getUserObject().toString()));
+					if (frame.getPreferredSize().width > frame.getSize().width)
+						frame.setSize(frame.getPreferredSize());
+					frame.repaint();
 				}
-				repaint();
 			}
 		});
+	}
+
+	public int getAllChild(TreeNode node) {
+		int res = 0;
+		for (int i = 0; i < node.getChildCount(); i++) {
+			res+= getAllChild(node.getChildAt(i));
+		}
+		res+=node.getChildCount();
+		return res;
+	}
+
+	public void setData(String capteur) {
+		if (choose) {
+			labels.get(0).setText(capteur);
+			labels.get(1).setText(req.getType(capteur));
+			labels.get(2).setText(req.getBatiment(capteur));
+			labels.get(3).setText(req.getEtage(capteur));
+			labels.get(4).setText(req.getLieu(capteur));
+			labels.get(5).setText(String.valueOf(req.getSeuilMin(capteur))+" "+TypeCapteurs.stringToUnite(req.getType(capteur)));
+			labels.get(6).setText(String.valueOf(req.getSeuilMax(capteur))+" "+TypeCapteurs.stringToUnite(req.getType(capteur)));
+		}
+
 	}
 
 }

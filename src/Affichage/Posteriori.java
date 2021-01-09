@@ -32,14 +32,13 @@ public class Posteriori extends JPanel{
 		JButton bGraph = new JButton("nouveau graphe");
 		bGraph.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(frame.getPreferredSize());
 				frame.dispose();
 				new ChoixGraph();
 			}
 		});
 		this.add(bGraph);
 		if (type != null) {
-			JFreeChart chart = ChartFactory.createTimeSeriesChart("Graphe", "Date", "Valeur", createCategoryDataset());
+			JFreeChart chart = ChartFactory.createTimeSeriesChart("Graphe", "Date", type.toString()+" "+ type.unite(), createCategoryDataset());
 			ChartPanel cp = new ChartPanel(chart,true);
 			this.add(cp);
 			if (listDate.size() == 1)

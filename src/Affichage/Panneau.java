@@ -28,11 +28,10 @@ public class Panneau {
 		Timer chrono = new Timer(1000,  new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tempsReel.refreshData();
-				tempsReel.refreshTable();
 				tempsReel.repaint();
 			}
 		});
-		//chrono.start();
+		chrono.start();
 	}
 	
 }
