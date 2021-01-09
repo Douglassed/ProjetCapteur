@@ -65,6 +65,7 @@ public class FenetreAccueil {
 							final Serveur c = new Serveur(port);
 					        final Thread t = new Thread(c);
 					        t.start();
+					        frame.dispose();
 							new Panneau(null, null, null);
 						}
 					});
