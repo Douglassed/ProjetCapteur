@@ -1,10 +1,14 @@
 package Affichage;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,9 +28,11 @@ public class Posteriori extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private List<String> capteurs;
 	private List<String> listDate;
+	SortedSet<String> set;
 	
 
 	public Posteriori(JFrame frame, TypeCapteurs type, List<String> capteursChoisis, List<String> list) {
+		set = new TreeSet<String>();
 		listDate = list;
 		capteurs = capteursChoisis;
 		JButton bGraph = new JButton("nouveau graphe");
@@ -36,13 +42,23 @@ public class Posteriori extends JPanel{
 				new ChoixGraph();
 			}
 		});
-		this.add(bGraph);
+		this.setLayout(new BorderLayout());
+		this.add(bGraph,BorderLayout.NORTH);
+		String str = "";
+
 		if (type != null) {
-			JFreeChart chart = ChartFactory.createTimeSeriesChart("Graphe", "Date", type.toString()+" "+ type.unite(), createCategoryDataset());
+			XYSeriesCollection xy = createCategoryDataset();
+			System.out.println(set);
+			if (set.size() < 3 && set.size() > 0) {
+				str = " [";
+				for (String string : set) {
+					str += string+"], [";
+				}
+				str = str.substring(0, str.length()-3);
+			}
+			JFreeChart chart = ChartFactory.createTimeSeriesChart("Graphe", "Date"+str, type.toString()+" "+ type.unite(), xy);
 			ChartPanel cp = new ChartPanel(chart,true);
-			this.add(cp);
-			if (listDate.size() == 1)
-				this.add(new JLabel(listDate.get(0)));
+			this.add(cp,BorderLayout.CENTER);
 		}
 	}
 	private XYSeriesCollection createCategoryDataset() {
@@ -61,6 +77,8 @@ public class Posteriori extends JPanel{
 					
 					for(Long day : map.keySet()) {
 						series.add(day, map.get(day));
+						Date d = new Date(day);
+						set.add(d.toString());
 					}
 				}
 				dataset.addSeries(series);

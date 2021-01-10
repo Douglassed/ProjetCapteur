@@ -10,7 +10,7 @@ import javax.swing.Timer;
 
 public class Panneau {
 	public Panneau(TypeCapteurs type, List<String> capteursChoisis, List<String> list) {
-		JFrame frame = new JFrame("nouvelle fenetre !");
+		JFrame frame = new JFrame("Interface Graphique");
 		TempsReel tempsReel = new TempsReel();
 		Posteriori posteriori = new Posteriori(frame, type, capteursChoisis, list);
 		GestionSeuil gestion = new GestionSeuil(frame);

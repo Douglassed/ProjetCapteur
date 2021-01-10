@@ -46,7 +46,6 @@ public class ModeleDonnees extends AbstractTableModel{
 			this.fireTableDataChanged();
 		}
 		nbCapteur = nomCapteurs.size();
-
 		return nbCapteur;
 	}
 

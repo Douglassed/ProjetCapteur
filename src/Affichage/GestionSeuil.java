@@ -17,7 +17,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTree;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -27,7 +30,7 @@ import DAO.Requetes;
 
 public class GestionSeuil extends JPanel{
 	private static final long serialVersionUID = 1L;
-	
+
 	private JTree tree;
 	private Requetes req = new Requetes();
 	private boolean choose = false;
@@ -35,6 +38,7 @@ public class GestionSeuil extends JPanel{
 	Object[] data = {"","","","","","",""};
 	private ArrayList<JLabel> labels = new ArrayList<JLabel>();
 	private String capteur;
+	DefaultMutableTreeNode root;
 
 	public GestionSeuil(JFrame frame) {
 		super(new BorderLayout());
@@ -53,12 +57,32 @@ public class GestionSeuil extends JPanel{
 				}
 			}
 		});
+		JButton refresh = new JButton("rafraichir");
+		refresh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				root.removeAllChildren();
+				for (String bat : req.getAllBatiments()) {
+					DefaultMutableTreeNode batiment = new DefaultMutableTreeNode(bat+"                                ");
+					for (String et : req.getEtagesFromBatiment(bat)) {
+						DefaultMutableTreeNode etage = new DefaultMutableTreeNode(et);
+						for (String cap : req.getCapteursFromEtageAndBatiment(et, bat)) {
+							DefaultMutableTreeNode capteur = new DefaultMutableTreeNode(cap);
+							etage.add(capteur);
+						}
+						batiment.add(etage);
+					}
+					root.add(batiment);
+				}
+				frame.repaint();
+				tree.updateUI();
+				frame.pack();
+			}
+		});
 
-		//create the root node
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
+		root = new DefaultMutableTreeNode("Root");
 
 		for (String bat : req.getAllBatiments()) {
-			DefaultMutableTreeNode batiment = new DefaultMutableTreeNode(bat);
+			DefaultMutableTreeNode batiment = new DefaultMutableTreeNode(bat+"                                   ");
 			for (String et : req.getEtagesFromBatiment(bat)) {
 				DefaultMutableTreeNode etage = new DefaultMutableTreeNode(et);
 				for (String cap : req.getCapteursFromEtageAndBatiment(et, bat)) {
@@ -69,14 +93,18 @@ public class GestionSeuil extends JPanel{
 			}
 			root.add(batiment);
 		}
-
+		
 		//create the tree by passing in the root node
 		tree = new JTree(root);
 		tree.setShowsRootHandles(false);
 		tree.setVisibleRowCount(10);
 		tree.setRootVisible(false);
-		tree.setPreferredSize(new Dimension(150,50));
-		add(new JScrollPane(tree),BorderLayout.WEST);
+		JScrollPane scroll = new JScrollPane(tree);
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		panel.add(scroll,BorderLayout.CENTER);
+		panel.add(refresh,BorderLayout.SOUTH);
+		add(panel,BorderLayout.WEST);
 		details.setLayout(new BorderLayout());
 		JPanel jp = new JPanel();
 		jp.setLayout(new BoxLayout(jp, BoxLayout.Y_AXIS));
@@ -85,6 +113,7 @@ public class GestionSeuil extends JPanel{
 		box.add(new JLabel("Modifier les Seuils : "));
 		box.add(new JLabel("    "));
 		box.add(seuil);
+//		box.add(refresh);
 		box.add(Box.createHorizontalGlue());
 		Box box2 = new Box(BoxLayout.X_AXIS);
 		box2.add(new JLabel(" "));
@@ -139,12 +168,11 @@ public class GestionSeuil extends JPanel{
 		add(txt,BorderLayout.NORTH);
 		tree.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
+				frame.pack();
 				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 				if (selectedNode.getLevel() == 3) {
 					choose = true;
 					setData((capteur = selectedNode.getUserObject().toString()));
-//					if (frame.getPreferredSize().width > frame.getSize().width)
-//						frame.setSize(new Dimension(frame.getPreferredSize().width,frame.getSize().height));
 					frame.pack();
 					frame.repaint();
 				}
@@ -172,6 +200,25 @@ public class GestionSeuil extends JPanel{
 			labels.get(6).setText(String.valueOf(req.getSeuilMax(capteur))+" "+TypeCapteurs.stringToUnite(req.getType(capteur)));
 		}
 
+	}
+
+	private DefaultMutableTreeNode createRoot() {
+		//create the root node
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
+
+		for (String bat : req.getAllBatiments()) {
+			DefaultMutableTreeNode batiment = new DefaultMutableTreeNode(bat);
+			for (String et : req.getEtagesFromBatiment(bat)) {
+				DefaultMutableTreeNode etage = new DefaultMutableTreeNode(et);
+				for (String cap : req.getCapteursFromEtageAndBatiment(et, bat)) {
+					DefaultMutableTreeNode capteur = new DefaultMutableTreeNode(cap);
+					etage.add(capteur);
+				}
+				batiment.add(etage);
+			}
+			root.add(batiment);
+		}
+		return root;
 	}
 
 }

@@ -20,7 +20,7 @@ public class ChoixGraph {
 	List<String> capteursChoisis = new ArrayList<>();
 	JFrame frame = new JFrame("Choix des capteurs");
 	List<String> capteurs = new ArrayList<String>();
-	int cpt = 0;
+	int cpt = 1;
 	TypeCapteurs[] liste;
 	int indexType;
 	JLabel txt;
@@ -43,7 +43,7 @@ public class ChoixGraph {
 		frame.pack();
 		frame.setSize(400,350);
 		frame.setLocationRelativeTo(null);
-		
+
 		for(String s : capteurs) {
 			JButton button = new JButton(s);
 			button.addActionListener(new ActionListener() {
@@ -67,7 +67,7 @@ public class ChoixGraph {
 		frame.setVisible(true);
 
 	}
-	
+
 	private void fonction(String s, JButton button) {
 
 		capteursChoisis.add(s);
@@ -78,31 +78,34 @@ public class ChoixGraph {
 		cpt++;
 		txt.setText("Choix du capteur de type "+type+" n°"+cpt+" : ");
 		frame.add(txt, 0);
-		if (cpt > 2 ) {
+		if (cpt > 3 || button.getText() == "none") {
 			frame.dispose();
 			Requetes req = new Requetes();
 			List<String> list = req.getListeDates();
-			if (list.size()!=0) {
-				String fst =(String)JOptionPane.showInputDialog(null, "Choix de la date de debut", "Intervalle des dates", 
+			if (list.size() != 0) {
+				String fst = (String) JOptionPane.showInputDialog(null, "Choix de la date de debut", "Intervalle des dates", 
 						JOptionPane.DEFAULT_OPTION, null, list.toArray(), list.get(list.size()-1));
-				int i =0;
-				while(list.get(i) != fst) 
-					i++;
+				if (fst != null) {
+					int i = 0;
+					while(list.get(i) != fst)
+						i++;
 
-				for(ListIterator<String> iter = list.listIterator(i+1);iter.hasNext();) {
-					iter.next();
-					iter.remove();
-				}
+					for(ListIterator<String> iter = list.listIterator(i+1);iter.hasNext();) {
+						iter.next();
+						iter.remove();
+					}
 
-				String snd =(String)JOptionPane.showInputDialog(null, "Choix de la date de fin", "Intervalle des dates", 
-						JOptionPane.DEFAULT_OPTION, null, list.toArray(), null);
-				i=0;
-
-				while(list.get(i) != snd) 
-					i++;
-				for(ListIterator<String> iter = list.listIterator(i);iter.hasPrevious();) {
-					iter.previous();
-					iter.remove();
+					String snd =(String)JOptionPane.showInputDialog(null, "Choix de la date de fin", "Intervalle des dates", 
+							JOptionPane.DEFAULT_OPTION, null, list.toArray(), null);
+					if (snd != null ) {
+						i=0;
+						while(list.get(i) != snd) 
+							i++;
+						for(ListIterator<String> iter = list.listIterator(i);iter.hasPrevious();) {
+							iter.previous();
+							iter.remove();
+						}
+					}
 				}
 			}
 

@@ -29,7 +29,6 @@ public class FenetreAccueil {
 				fonction(false);
 			}
 		});
-		ok.setToolTipText("OK");
 		JButton quitter = new JButton("Quitter");
 		quitter.setFont(new Font("Quitter", Font.PLAIN, quitter.getFont().getSize() * 2));
 		quitter.addActionListener(new ActionListener() {

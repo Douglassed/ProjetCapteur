@@ -7,6 +7,7 @@ import DAO.Entrees;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -53,7 +54,7 @@ public class Serveur implements Runnable
                                     	en.capteur(recu[1], recu[2]);
                                     else if(recu[0].equals("Donnee"))
                                     	en.valeur(recu[1], recu[2]);
-                                    else if(recu[0].equals("Dexonnexion"))
+                                    else if(recu[0].equals("Deconnexion"))
                                         en.disconnectCapteur(recu[1]);
                                     
                                 }

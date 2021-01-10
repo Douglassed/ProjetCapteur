@@ -6,7 +6,6 @@ public class Requetes {
 	Connection connection;
 
 	public Requetes() {
-		System.out.println("connexion");
 		try {
 			connection = DriverManager.getConnection(
 					"jdbc:mysql://127.0.0.1:3306/projetcapteurs?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC", "root", "");
@@ -158,7 +157,6 @@ public class Requetes {
 
 			while (rst.next()) {
 				assoc.put(rst.getLong("UNIX_TIMESTAMP(valeurs.date_val)*1000"), rst.getFloat("valeur"));
-				System.out.println("une valeur");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
