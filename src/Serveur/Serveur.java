@@ -1,19 +1,16 @@
 package Serveur;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.SocketException;
 
 import DAO.Entrees;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.net.BindException;
-import java.net.ServerSocket;
-import java.net.Socket;
-
 public class Serveur implements Runnable
 {
-    private static final int PORT = 8952;
     Socket socket;
     ServerSocket server;
     Entrees en=new Entrees();

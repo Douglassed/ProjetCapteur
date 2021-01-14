@@ -1,9 +1,11 @@
 package Affichage;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ListIterator;
 
+import javax.swing.Timer;
 import javax.swing.table.AbstractTableModel;
 
 import DAO.Requetes;
@@ -11,13 +13,11 @@ import DAO.Requetes;
 
 public class ModeleDonnees extends AbstractTableModel{
 	private static final long serialVersionUID = 5807321557577123009L;
-	private Object[][] donnees;
 	private String[] titres;
 	private Requetes req;
 	private int nbCapteur;
 	private ArrayList<String> nomCapteurs;
 	public ModeleDonnees(Object[][] donnees, String[] titres, Requetes req) {
-		this.donnees = donnees;
 		nomCapteurs = new ArrayList<>();
 		if (donnees.length > 0) {
 			nbCapteur = donnees[0].length;
@@ -27,6 +27,12 @@ public class ModeleDonnees extends AbstractTableModel{
 		}
 		this.titres = titres;
 		this.req = req;
+		Timer chrono = new Timer(2000,  new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				fireTableDataChanged();
+			}
+		});
+		chrono.start();
 	}
 
 	@Override
@@ -50,7 +56,6 @@ public class ModeleDonnees extends AbstractTableModel{
 	}
 
 	public Object getValueAt(final int indiceLigne, final int indiceColonne) {
-		//final Capteur c = this.listeCapteurs.getCapteur(indiceLigne);
 		String capteur = nomCapteurs.get(indiceLigne);
 		switch (indiceColonne) {
 		case 0: {
@@ -94,5 +99,4 @@ public class ModeleDonnees extends AbstractTableModel{
 	public boolean isCellEditable(final int indiceLigne, final int indiceColonne) {
 		return false;
 	}
-
 }

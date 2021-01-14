@@ -1,12 +1,9 @@
 package Affichage;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.Timer;
 
 public class Panneau {
 	public Panneau(TypeCapteurs type, List<String> capteursChoisis, List<String> list) {
@@ -25,13 +22,7 @@ public class Panneau {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		Timer chrono = new Timer(2000,  new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				tempsReel.refreshData();
-				tempsReel.repaint();
-			}
-		});
-		chrono.start();
+		
 	}
 	
 }

@@ -12,7 +12,6 @@ import java.util.TreeSet;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
@@ -48,7 +47,6 @@ public class Posteriori extends JPanel{
 
 		if (type != null) {
 			XYSeriesCollection xy = createCategoryDataset();
-			System.out.println(set);
 			if (set.size() < 3 && set.size() > 0) {
 				str = " [";
 				for (String string : set) {
