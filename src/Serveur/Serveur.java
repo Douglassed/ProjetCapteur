@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.concurrent.Semaphore;
 
 import DAO.Entrees;
 
@@ -14,9 +15,11 @@ public class Serveur implements Runnable
     Socket socket;
     ServerSocket server;
     Entrees en=new Entrees();
+    Semaphore mutex;
     
     public Serveur(int port) {
-    	//en.emptyBase();
+    	en.emptyBase();
+    	mutex = new Semaphore(1);
         try {
         	en.disconnectAllCapteurs();
             this.server = new ServerSocket(port);
@@ -46,13 +49,14 @@ public class Serveur implements Runnable
                                     String recu[] = input.split(" ");
                                     //System.out.println(recu[1]);//nom
                                     //System.out.println(recu[2]);//données forme x:x:x:x
-                                    
+                                    mutex.acquire();
                                     if(recu[0].equals("Connexion"))
                                     	en.capteur(recu[1], recu[2]);
                                     else if(recu[0].equals("Donnee"))
                                     	en.valeur(recu[1], recu[2]);
                                     else if(recu[0].equals("Deconnexion"))
                                         en.disconnectCapteur(recu[1]);
+                                    mutex.release();
                                     
                                 }
                                 

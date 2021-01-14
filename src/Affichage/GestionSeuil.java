@@ -58,7 +58,6 @@ public class GestionSeuil extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				root.removeAllChildren();
 				for (String bat : req.getAllBatiments()) {
-					System.out.println(bat);
 					DefaultMutableTreeNode batiment = new DefaultMutableTreeNode(bat+"                                ");
 					for (String et : req.getEtagesFromBatiment(bat)) {
 						DefaultMutableTreeNode etage = new DefaultMutableTreeNode(et);
@@ -73,15 +72,10 @@ public class GestionSeuil extends JPanel{
 				tree.updateUI();
 				frame.repaint();
 				frame.pack();
-				if (root.getChildCount() == 0)
-					tree.setRootVisible(true);
-				tree.updateUI();
-				frame.repaint();
-				frame.pack();
 			}
 		});
 
-		root = new DefaultMutableTreeNode("Vide");
+		root = new DefaultMutableTreeNode("Arbre de capteurs");
 
 		for (String bat : req.getAllBatiments()) {
 			DefaultMutableTreeNode batiment = new DefaultMutableTreeNode(bat+"                                   ");
@@ -96,7 +90,7 @@ public class GestionSeuil extends JPanel{
 			root.add(batiment);
 		}
 		
-		//create the tree by passing in the root node
+		//create the tree 
 		tree = new JTree(root);
 		tree.setShowsRootHandles(false);
 		tree.setVisibleRowCount(10);
@@ -110,6 +104,8 @@ public class GestionSeuil extends JPanel{
 		panel.add(scroll,BorderLayout.CENTER);
 		panel.add(refresh,BorderLayout.SOUTH);
 		add(panel,BorderLayout.WEST);
+		
+		
 		details.setLayout(new BorderLayout());
 		JPanel jp = new JPanel();
 		jp.setLayout(new BoxLayout(jp, BoxLayout.Y_AXIS));
@@ -118,7 +114,6 @@ public class GestionSeuil extends JPanel{
 		box.add(new JLabel("Modifier les Seuils : "));
 		box.add(new JLabel("    "));
 		box.add(seuil);
-//		box.add(refresh);
 		box.add(Box.createHorizontalGlue());
 		Box box2 = new Box(BoxLayout.X_AXIS);
 		box2.add(new JLabel(" "));
@@ -183,15 +178,6 @@ public class GestionSeuil extends JPanel{
 				}
 			}
 		});
-	}
-
-	public int getAllChild(TreeNode node) {
-		int res = 0;
-		for (int i = 0; i < node.getChildCount(); i++) {
-			res+= getAllChild(node.getChildAt(i));
-		}
-		res+=node.getChildCount();
-		return res;
 	}
 
 	public void setData(String capteur) {
