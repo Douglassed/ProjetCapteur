@@ -1,4 +1,4 @@
-#A propos de ce projet NeoCampus réalisé dans le cadre de l'UE projet de L3S1
+#Projet NeoCampus réalisé dans le cadre de l'UE projet de L3S1
 
 -Fait par Clément Régis, Thomas Girerd et Hugo Beaurain
 -contient une interface, un serveur, une base de données et des fonctions pour intéragir avec celle ci
