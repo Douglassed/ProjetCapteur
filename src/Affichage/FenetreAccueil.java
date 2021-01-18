@@ -73,7 +73,7 @@ public class FenetreAccueil {
 					text.setText("8952");
 				}
 			}else {
-				frame.dispose();
+				System.exit(0);
 			}
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(frame, "Mauvaise entrée : entier positif demandé", "Erreur", JOptionPane.ERROR_MESSAGE);

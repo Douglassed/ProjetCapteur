@@ -1,6 +1,8 @@
 package Affichage;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
@@ -10,8 +12,10 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
@@ -41,8 +45,15 @@ public class Posteriori extends JPanel{
 				new ChoixGraph();
 			}
 		});
+		JPanel jolie = new JPanel(new BorderLayout());
+		
 		this.setLayout(new BorderLayout());
-		this.add(bGraph,BorderLayout.NORTH);
+		add(jolie,BorderLayout.CENTER);
+		JLabel txt = new JLabel(" Panneau d’analyse a posteriori  ");
+		txt.setFont(new Font(txt.getText(), Font.PLAIN, 20));
+		txt.setBorder(BorderFactory.createLineBorder(Color.black));
+		add(txt,BorderLayout.NORTH);
+		jolie.add(bGraph,BorderLayout.NORTH);
 		String str = "";
 
 		if (type != null) {
@@ -56,7 +67,7 @@ public class Posteriori extends JPanel{
 			}
 			JFreeChart chart = ChartFactory.createTimeSeriesChart("Graphe", "Date"+str, type.toString()+" "+ type.unite(), xy);
 			ChartPanel cp = new ChartPanel(chart,true);
-			this.add(cp,BorderLayout.CENTER);
+			jolie.add(cp,BorderLayout.CENTER);
 		}
 	}
 	private XYSeriesCollection createCategoryDataset() {

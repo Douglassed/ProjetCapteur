@@ -12,12 +12,17 @@ import DAO.Requetes;
 
 
 public class ModeleDonnees extends AbstractTableModel{
+
 	private static final long serialVersionUID = 5807321557577123009L;
 	private String[] titres;
 	private Requetes req;
 	private int nbCapteur;
 	private ArrayList<String> nomCapteurs;
-	public ModeleDonnees(Object[][] donnees, String[] titres, Requetes req) {
+	TempsReel tempsReel;
+
+
+	public ModeleDonnees(Object[][] donnees, String[] titres, Requetes req, TempsReel tempsReel) {
+		this.tempsReel = tempsReel;
 		nomCapteurs = new ArrayList<>();
 		if (donnees.length > 0) {
 			nbCapteur = donnees[0].length;
@@ -26,10 +31,11 @@ public class ModeleDonnees extends AbstractTableModel{
 			}
 		}
 		this.titres = titres;
-		this.req = req;
+		this.req = req; 
 		Timer chrono = new Timer(2000,  new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				fireTableDataChanged();
+				tempsReel.refreshBox();
 			}
 		});
 		chrono.start();
@@ -43,9 +49,12 @@ public class ModeleDonnees extends AbstractTableModel{
 	@Override
 	public int getRowCount() {
 		nomCapteurs = req.getNomsCapteurs();
+
 		for(ListIterator<String> iter = nomCapteurs.listIterator();iter.hasNext();) {
 			String capt = iter.next();
 			if (!req.isActif(capt))
+				iter.remove();
+			else if (!isFilter(capt))
 				iter.remove();
 		}
 		if (nbCapteur != nomCapteurs.size()) {
@@ -98,5 +107,20 @@ public class ModeleDonnees extends AbstractTableModel{
 	@Override
 	public boolean isCellEditable(final int indiceLigne, final int indiceColonne) {
 		return false;
+	}
+
+	private boolean isFilter(String capteur) {
+		boolean valid = true;
+		String batiment = tempsReel.getBatiment();
+		String type = tempsReel.getType();
+		if (batiment != "Aucun") {
+			if (!req.getBatiment(capteur).equals(batiment))
+				valid = false;
+		}
+		if (type != "Aucun") {
+			if (!req.getType(capteur).equals(type.toString()))
+				valid = false;
+		}
+		return valid;
 	}
 }

@@ -18,7 +18,7 @@ public class Serveur implements Runnable
     Semaphore mutex;
     
     public Serveur(int port) {
-    	en.emptyBase();
+//    	en.emptyBase();
     	mutex = new Semaphore(1);
         try {
         	en.disconnectAllCapteurs();

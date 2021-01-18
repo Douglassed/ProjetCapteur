@@ -2,6 +2,7 @@ package Affichage;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -162,8 +163,9 @@ public class GestionSeuil extends JPanel{
 		details.add(tableau,BorderLayout.CENTER);
 		add(details,BorderLayout.CENTER);
 
-		JLabel txt = new JLabel("Panneau de gestion des capteurs");
+		JLabel txt = new JLabel(" Panneau de gestion des capteurs");
 		txt.setBorder(BorderFactory.createLineBorder(Color.black));
+		txt.setFont(new Font(txt.getText(), Font.PLAIN, 20));
 		add(txt,BorderLayout.NORTH);
 		tree.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
