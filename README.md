@@ -1,6 +1,5 @@
 # Projet NeoCampus réalisé dans le cadre de l'UE projet de L3S1
 
--Fait par Clément Régis, Thomas Girerd et Hugo Beaurain
 -contient une interface, un serveur, une base de données et des fonctions pour intéragir avec celle ci
 
 ## Installation
@@ -30,3 +29,7 @@ delete valeurs from valeurs;
 delete capteurs from capteurs;
 delete etages from etages;
 delete batiments from batiments;
+
+## Credits
+
+-Fait par Clément Régis, Thomas Girerd et Hugo Beaurain
